@@ -1,28 +1,20 @@
-from array import array
+
 import io
-from logging import raiseExceptions
-from multiprocessing.sharedctypes import Value
-from operator import index
-from tkinter.messagebox import NO
-from tkinter.tix import ListNoteBook
-from xml.dom.minicompat import NodeList
 
 class Reto2:
-    #Creamos una clase anidada
+    
     class Node:
-        #Creamos el metodo ejecutor
         def __init__(self,value):
-            #Definimos la estructura de un nodo
             self.value = value
             self.next_node = None
-        #Metodo inicialisador de la clase Single Linked list
+
     def __init__(self):
         self.head = None
         self.tail = None
         self.length = 0
         self.menu()
         self.list_to_text()
-    #Metodo que imprime la lista simplemente enlasada
+    
     def show_nodes_list(self):
         node_list = []
         current_node = self.head
@@ -30,49 +22,37 @@ class Reto2:
             node_list.append(current_node.value)
             current_node = current_node.next_node
         print(f'{node_list} Cantidad de nodos {self.length}')
-    #Metodo que agrega un nodo nuevo al inicio a la lista
+  
     def prepend_node(self,value):
         new_node = self.Node(value)
-        #Consultar si la lista tiene head and tail
         if self.head == None and self.tail == None:
-            #En caso de que la lista este vacia, no contiene nodos
             self.head = new_node
             self.tail = new_node
         else:
-            #En este caso, la lista contiene al menos un nodo
-            #para este caso habria que enlazar el nodo en si
             new_node.next_node = self.head
             self.head = new_node
         self.length+= 1
-    #Añadir valor al final de la lista
+    
     def append_node(self,value):
         new_node = self.Node(value)
-        #Consultar si la lista tiene head and tail
         if self.head == None and self.tail == None:
-            #En caso de que la lista este vacia, no contiene nodos
             self.head = new_node
             self.tail = new_node
         else:
-            #En este caso, la lista contiene al menos un nodo
-            #para este caso habria que enlazar el nodo en si
             self.tail.next_node = new_node
             self.tail = new_node
         self.length+= 1
-    #Eliminar el primer nodo de una lista
     def shift_node(self):
         if self.length == 0:
             self.head = None
             self.tail = None
         else:
-            #Eliminar la cabesa de la lista
             remove_node = self.head
-            #El nodo que le seguia al primero pasa a ser el primero
             self.head = remove_node.next_node
-            #Eliminamos el enlace que se removera de la lista
             remove_node.next_node = None
             self.length -= 1
             return remove_node
-    #Eliminamos el ultimo elemento de la lista 
+        
     def pop_node(self):
         if self.length == 0:
             self.head = None
@@ -82,9 +62,7 @@ class Reto2:
             self.tail = None
             self.length -= 1
         else:
-            #Eliminar la cabesa de la lista
             current_node = self.head
-            #Creamos una nueva variableque asignara el nuevo valor de cola
             new_tail = current_node
             while current_node.next_node != None:
                 new_tail = current_node
@@ -106,24 +84,15 @@ class Reto2:
         self.head = reverse_nodes
         return
         
-    #Consultar el valor de un nodo
     def get(self,index):
-        #Si el indice es el ultimo nodo de la lista nos referimos a la cola
         if index == self.length+1:
             return self.tail    
-
-        #Si el indice es el primer valor de la lista, devolvemos el valor de la cabeza
         elif index == 1:
             return self.head
-        
-        #De lo contrario, es por que el indice esta en una posicion intermedia
-        #Validar que el indice se encuentre en los valores permitidos de la lista
         elif not (index > self.length+1 or index < 1):
             current_node = self.head
             contador = 1
-            #Recorremos la lista siempre y cuando el contador sea diferente del nodo a buscar
             while contador != index:
-                #Incrementamos en uno el while para visitar el siguiente nodo
                 current_node = current_node.next_node
                 contador += 1
             return current_node
@@ -131,32 +100,23 @@ class Reto2:
             print('El indice no pertenece la la lista')
             return None
         
-    #Metodo que nos permite actualizar el valor del nodo
     def update(self,index,value):
-        #Cambia el valor del un noda dado en un index
         nodo_objetivo = self.get(index)
         if nodo_objetivo != None:
-            #Reemplazamos el valor actual del nodo suministrado por el usuario
             nodo_objetivo.value = value
         else:
             print('El indice no pertenece a la lista')
             return None
         
-    #Agrega un elemnto en donde sea en la lista dado un index
     def insert(self,index,value):
-        #Siempre que se desee crear un nuevo nodo se le solicita el valor 
-        #Si el usuario quiere añadir el nodo al final de la lista se llama a la funcion
         if index == self.length+1:
             return self.append_node(value)
-        #Se valida el si se valida al inicio de la lista
         elif index == 1:
             return self.prepend_node(value)
-        #Se valida si el indice esta dentro de los rangos de la lista
         elif not index > self.length+1 or index <= 0:
             new_node = self.Node(value)
             nodos_anteriores = self.get(index-1)
             nodos_siguientes = nodos_anteriores.next_node
-            #Generamos los enlaces del nuevo nodo con el anterior y el siguiente
             nodos_anteriores.next_node = new_node
             new_node.next_node = nodos_siguientes
             self.length += 1
@@ -164,7 +124,6 @@ class Reto2:
             return None
         
     def remove(self,index):
-        #Saca un emento de la lista dado un indice
         if index == 1:
             return self.shift_node()
         elif index == self.length+1:
@@ -338,6 +297,5 @@ class Reto2:
         
         
     def vaciar_lista(self):
-        remove_node = self.head
         for item in range (0,self.length+1):
             self.pop_node()
