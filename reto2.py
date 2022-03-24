@@ -163,7 +163,8 @@ class Reto2:
             try:
                 seleccion = str(input('Seleccion:  '))
                 if seleccion == 'a':
-                    self.add_text_to_list
+                    self.add_text_to_list()
+                    self.show_file_content()
                 elif seleccion == 'b':
                     self.vaciar_lista()
                     line_write = input('El texto nuevo que desea añadir es:\n   >>>')
